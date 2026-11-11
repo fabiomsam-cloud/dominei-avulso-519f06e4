@@ -118,7 +118,9 @@ tr.tot td{font-weight:700;border-top:2px solid var(--ink-2);border-bottom:0}
 <script>
 const API  = "https://dqpxugdhlgafvddavzzp.supabase.co/functions/v1/painel-dominei-avulso";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxcHh1Z2RobGdhZnZkZGF2enpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxODQ1NTMsImV4cCI6MjA5Nzc2MDU1M30.nUhYPO3oLUZEXgQCDlRtL-Jawi0nr0l1Z7_z5ecEXvc"; // chave pública do Data Core, a mesma dos outros painéis
-const K = new URLSearchParams(location.search).get("k") || "";
+// a chave vem no endereço (?k=) na primeira vez e fica guardada neste navegador: depois o endereço curto também abre
+let K = new URLSearchParams(location.search).get("k") || "";
+try { if (K) localStorage.setItem("painel_dominei_avulso_k", K); else K = localStorage.getItem("painel_dominei_avulso_k") || ""; } catch (_) {}
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const num = (v) => Number(v || 0).toLocaleString("pt-BR");
@@ -179,7 +181,8 @@ async function carregar(gerar) {
     if (!r.ok || d.error) throw new Error(d.error || ("resposta " + r.status));
     render(d);
   } catch (e) {
-    $("err").textContent = "Falha ao carregar os dados: " + e.message + (K ? "" : " — confira a chave ?k= no endereço.");
+    $("err").textContent = /unauthorized/.test(e.message) ? "Este endereço está sem a chave de acesso. Abra uma vez o endereço completo (o que termina em ?k=…); depois disso este navegador lembra."
+      : "Falha ao carregar os dados: " + e.message;
     $("err").style.display = "block";
   }
   b.disabled = false; b.textContent = "Atualizar agora";
