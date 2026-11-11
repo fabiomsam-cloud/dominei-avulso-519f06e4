@@ -1,0 +1,6 @@
+.token
+.repo
+edge/
+migrations/
+ligar.sh
+.DS_Store

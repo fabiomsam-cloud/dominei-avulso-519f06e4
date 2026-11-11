@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>SOU · Dominei avulso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* PAINEL · DOMINEI AVULSO — disparos e matrículas da oferta avulsa (11/11/2026). Mesmo visual dos outros painéis da casa.
+   Os números vêm da edge painel-dominei-avulso (chave no ?k=). Atualiza 1 vez por dia às 06h30 de Manaus ou no botão. */
+:root{
+  --page:#f5f6f8; --surface:#ffffff; --surface-2:#f2f4f7;
+  --ink:#0f172a; --ink-2:#334155; --muted:#64748b;
+  --grid:#e5e8ee; --ring:rgba(15,23,42,.08);
+  --gold:#b7791f; --gold-soft:rgba(183,121,31,.12);
+  --blue:#2563eb; --green:#15803d; --red:#dc2626; --amber:#b45309; --cyan:#009BBE;
+  --disp:"Bricolage Grotesque",sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45;min-height:100vh;position:relative}
+body::before{content:"";position:absolute;left:0;right:0;top:0;height:520px;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 380px at 85% -20%, rgba(0,155,190,.10), transparent 60%),radial-gradient(700px 320px at -5% 0%, rgba(17,24,39,.06), transparent 55%)}
+.wrap{position:relative;z-index:1;max-width:1480px;margin:0 auto;padding:26px 30px 90px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.brand h1{font-family:var(--disp);font-weight:800;font-size:31px;letter-spacing:-.6px;line-height:1.02}
+.brand h1 em{font-style:normal;color:var(--cyan)}
+.brand .sub{color:var(--muted);font-size:12.5px;margin-top:7px;letter-spacing:.2px;max-width:70ch}
+.brand .sub b{color:var(--ink-2);font-weight:600}
+.stamp{text-align:right;font-size:12px;color:var(--muted)}
+.stamp .clock{font-family:var(--disp);font-weight:700;font-size:20px;color:var(--ink-2);letter-spacing:-.2px}
+.btn{margin-top:8px;font:600 13px var(--body);color:#fff;background:var(--ink);border:0;border-radius:9px;padding:9px 14px;cursor:pointer}
+.btn:disabled{opacity:.55;cursor:wait}
+.card{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:20px 22px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin-bottom:12px;overflow:hidden}
+.card h2{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:-.2px}
+.card .hint{color:var(--muted);font-size:12px;margin-top:3px;max-width:95ch}
+.card-head{margin-bottom:14px}
+.grid{display:grid;gap:12px;margin-bottom:12px}
+.g-eq{grid-template-columns:1fr 1fr} .g-eq .card{margin-bottom:0}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:12px}
+.kpi{background:var(--surface);border:1px solid var(--ring);border-radius:14px;padding:15px 16px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.kpi .l{font-size:11.5px;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;font-weight:600}
+.kpi .v{font-family:var(--disp);font-weight:800;font-size:27px;letter-spacing:-.6px;margin-top:5px;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi.ouro{background:linear-gradient(180deg,#fffdf7,#fff);border-color:rgba(183,121,31,.35)} .kpi.ouro .v{color:var(--gold)}
+.tw{overflow-x:auto;margin:0 -6px;padding:0 6px}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);font-weight:600;text-align:right;padding:8px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
+th:first-child,td:first-child,th.e,td.e{text-align:left}
+td.nome{white-space:normal;min-width:230px;font-weight:600;color:var(--ink)}
+td.nome small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:1px}
+tr.zero td{color:var(--muted)} tr.zero td.nome{color:var(--ink-2)}
+tr.tot td{font-weight:700;border-top:2px solid var(--ink-2);border-bottom:0}
+.n{display:inline-grid;place-items:center;min-width:26px;height:22px;border-radius:6px;background:var(--surface-2);font-weight:700;font-size:12px;color:var(--ink-2)}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+.tag.al{background:rgba(37,99,235,.10);color:var(--blue)} .tag.na{background:rgba(180,83,9,.10);color:var(--amber)} .tag.no{background:rgba(220,38,38,.08);color:var(--red)}
+.tag.ok{background:rgba(21,128,61,.10);color:var(--green)}
+.ouro{color:var(--gold);font-weight:700}
+.bar{display:inline-block;height:9px;border-radius:4px;background:var(--cyan);vertical-align:middle;margin-right:6px;min-width:2px}
+.funil{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.funil div{background:var(--surface-2);border-radius:11px;padding:13px 14px}
+.funil .v{font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.4px}
+.funil .l{font-size:12px;color:var(--muted);margin-top:2px}
+.vazio{color:var(--muted);font-size:13px;padding:6px 0}
+#err{display:none;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.g-eq{grid-template-columns:1fr}.g-eq .card{margin-bottom:12px}}
+@media (max-width:640px){.wrap{padding:18px 14px 70px}.kpis{grid-template-columns:repeat(2,1fr)}.funil{grid-template-columns:repeat(2,1fr)}.stamp{text-align:left}.brand h1{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>SOU · <em>Dominei avulso</em></h1>
+      <div class="sub">Disparos e matrículas da oferta avulsa (1 ano e 2 anos). <b>Atualiza 1 vez por dia, às 06h30 de Manaus</b>, ou quando você tocar em Atualizar agora.</div>
+    </div>
+    <div class="stamp">
+      <div>Última atualização</div>
+      <div class="clock" id="quando">—</div>
+      <button class="btn" id="btnGerar" type="button">Atualizar agora</button>
+    </div>
+  </header>
+  <div id="err"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="card">
+    <div class="card-head"><h2>Camadas, da mais quente à mais fria</h2>
+      <div class="hint">Pessoas e estimativa vêm do levantamento de 11/11/2026 (cada pessoa só na camada mais quente). O resto preenche sozinho quando a campanha da Anne começar por <b>[DOMINEI][AVULSO] Cnn</b>, onde nn é o número da camada. Matrícula conta para o último disparo do avulso recebido até 7 dias antes da compra.</div></div>
+    <div class="tw"><table id="tCamadas"></table></div>
+  </div>
+
+  <div class="grid g-eq">
+    <div class="card">
+      <div class="card-head"><h2>De onde vieram as matrículas</h2><div class="hint">Pela origem marcada na compra. Pop-up tem prioridade; depois, disparo recebido nos 7 dias anteriores.</div></div>
+      <div class="tw"><table id="tOrigens"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Pop-up na área do aluno</h2><div class="hint">Alunos que viram o pop-up do Thinkr, quantos deixaram o WhatsApp e quantos desses compraram.</div></div>
+      <div class="funil" id="funil"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Campanhas disparadas</h2><div class="hint">Respostas em até 3 dias do envio; saídas (pediu para não receber) em até 7 dias. Custo de R$ 0,43 por mensagem enviada.</div></div>
+    <div class="tw"><table id="tCampanhas"></table></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Matrículas por dia</h2><div class="hint">Dia do pagamento, no calendário de Manaus.</div></div>
+    <div class="tw"><table id="tDias"></table></div>
+  </div>
+</div>
+
+<script>
+const API  = "https://dqpxugdhlgafvddavzzp.supabase.co/functions/v1/painel-dominei-avulso";
+const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxcHh1Z2RobGdhZnZkZGF2enpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxODQ1NTMsImV4cCI6MjA5Nzc2MDU1M30.nUhYPO3oLUZEXgQCDlRtL-Jawi0nr0l1Z7_z5ecEXvc"; // chave pública do Data Core, a mesma dos outros painéis
+const K = new URLSearchParams(location.search).get("k") || "";
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const num = (v) => Number(v || 0).toLocaleString("pt-BR");
+const brl = (v) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pct = (a, b) => (b > 0 ? (100 * a / b).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + "%" : "—");
+const dataHora = (iso) => iso ? new Date(iso).toLocaleString("pt-BR", { timeZone: "America/Manaus", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—";
+const dia = (iso) => iso ? String(iso).slice(0, 10).split("-").reverse().join("/") : "—";
+const tagPublico = (p) => p === "alunos" ? '<span class="tag al">alunos</span>' : p === "não alunos" ? '<span class="tag na">não alunos</span>' : '<span class="tag">alunos e não alunos</span>';
+
+function render(d) {
+  const r = d.resumo || {};
+  $("quando").textContent = dataHora(d.gerado_em) + " (Manaus)";
+  $("kpis").innerHTML = [
+    ["Matrículas", num(r.matriculas), (r.reembolsos ? num(r.reembolsos) + " reembolso(s)" : "compras pagas do avulso"), ""],
+    ["Receita líquida", brl(r.receita_liquida), "o que entra, já sem taxas", "ouro"],
+    ["1 ano · 2 anos", num(r.um_ano) + " · " + num(r.dois_anos), "divisão das matrículas", ""],
+    ["Mensagens enviadas", num(r.enviados), "nas campanhas do avulso", ""],
+    ["Custo de envio", brl(r.custo), r.matriculas ? brl(r.custo / r.matriculas) + " por matrícula" : "R$ 0,43 por mensagem", ""],
+    ["Faturas em aberto", num(r.faturas_abertas), "geradas e ainda não pagas", ""],
+  ].map(([l, v, s, c]) => `<div class="kpi ${c}"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+
+  const cs = d.camadas || [], tot = { pessoas: 0, enviados: 0, respostas: 0, optouts: 0, vendas: 0, liquido: 0, min: 0, max: 0 };
+  $("tCamadas").innerHTML = `<tr><th class="e">#</th><th class="e">Camada</th><th class="e">Público</th><th>Pessoas</th><th>Estimativa</th><th class="e">Sugestão</th><th>Enviados</th><th>Respostas</th><th>Saídas</th><th>Matrículas</th><th>Conversão</th><th>Receita líquida</th><th>Custo</th></tr>` +
+    cs.map((c) => { tot.pessoas += c.pessoas; tot.enviados += c.enviados; tot.respostas += c.respostas; tot.optouts += c.optouts; tot.vendas += c.vendas; tot.liquido += Number(c.liquido); tot.min += c.mat_min; tot.max += c.mat_max;
+      const nao = /não disparar/.test(c.sugestao || "");
+      return `<tr class="${c.enviados ? "" : "zero"}"><td class="e"><span class="n">${c.n}</span></td><td class="nome e">${esc(c.nome)}<small>${esc(c.criterio || "")}</small></td><td class="e">${tagPublico(c.publico)}</td>
+        <td>${num(c.pessoas)}</td><td>${c.mat_min}–${c.mat_max}</td><td class="e"><span class="tag ${nao ? "no" : ""}">${esc(c.sugestao || "")}</span></td>
+        <td>${c.enviados ? num(c.enviados) : "—"}</td><td>${c.enviados ? num(c.respostas) + " (" + pct(c.respostas, c.enviados) + ")" : "—"}</td><td>${c.enviados ? num(c.optouts) : "—"}</td>
+        <td>${c.vendas ? '<span class="ouro">' + num(c.vendas) + "</span>" : (c.enviados ? "0" : "—")}</td><td>${c.enviados ? pct(c.vendas, c.enviados) : "—"}</td>
+        <td>${c.vendas ? '<span class="ouro">' + brl(c.liquido) + "</span>" : "—"}</td><td>${c.enviados ? brl(c.enviados * 0.43) : "—"}</td></tr>`; }).join("") +
+    `<tr class="tot"><td class="e"></td><td class="e">Total</td><td class="e"></td><td>${num(tot.pessoas)}</td><td>${tot.min}–${tot.max}</td><td class="e"></td><td>${num(tot.enviados)}</td><td>${num(tot.respostas)}</td><td>${num(tot.optouts)}</td><td>${num(tot.vendas)}</td><td>${pct(tot.vendas, tot.enviados)}</td><td>${brl(tot.liquido)}</td><td>${brl(tot.enviados * 0.43)}</td></tr>`;
+
+  const os = d.origens || [], mx = Math.max(1, ...os.map((o) => o.vendas));
+  $("tOrigens").innerHTML = os.length ? `<tr><th class="e">Origem</th><th>Matrículas</th><th>Receita líquida</th></tr>` + os.map((o) => `<tr><td class="e"><span class="bar" style="width:${Math.round(90 * o.vendas / mx)}px"></span>${esc(o.origem)}</td><td>${num(o.vendas)}</td><td class="ouro">${brl(o.liquido)}</td></tr>`).join("")
+    : `<tr><td class="vazio e">Ainda não há matrícula paga do avulso.</td></tr>`;
+
+  const p = d.popup || {};
+  $("funil").innerHTML = [["Alunos que viram", num(p.viram)], ["Exibições", num(p.exibicoes)], ["Deixaram o WhatsApp", num(p.cadastraram) + " · " + pct(p.cadastraram, p.viram)], ["Compraram", num(p.compraram) + " · " + pct(p.compraram, p.cadastraram)]]
+    .map(([l, v]) => `<div><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+
+  const ca = d.campanhas || [];
+  $("tCampanhas").innerHTML = ca.length ? `<tr><th class="e">Campanha</th><th>Camada</th><th class="e">Situação</th><th>Público</th><th>Enviados</th><th>Falhas</th><th>Pulados</th><th>Respostas</th><th>Saídas</th><th>Matrículas</th><th>Receita líquida</th><th>Custo</th><th>1º envio</th></tr>` +
+    ca.map((c) => `<tr><td class="nome e">${esc(c.nome)}</td><td>${c.camada != null ? '<span class="n">' + c.camada + "</span>" : "—"}</td><td class="e"><span class="tag ${c.status === "done" ? "ok" : ""}">${esc(c.status || "")}</span></td><td>${num(c.total)}</td><td>${num(c.enviados)}</td><td>${num(c.falhas)}</td><td>${num(c.pulados)}</td>
+      <td>${num(c.respostas)} (${pct(c.respostas, c.enviados)})</td><td>${num(c.optouts)}</td><td>${c.vendas ? '<span class="ouro">' + num(c.vendas) + "</span>" : "0"}</td><td>${c.vendas ? '<span class="ouro">' + brl(c.liquido) + "</span>" : "—"}</td><td>${brl(c.enviados * 0.43)}</td><td>${dataHora(c.primeiro_envio || c.agendada)}</td></tr>`).join("")
+    : `<tr><td class="vazio e">Nenhum disparo do avulso ainda. As campanhas aparecem aqui sozinhas quando o nome começar por [DOMINEI][AVULSO] Cnn.</td></tr>`;
+
+  const ds = d.por_dia || [];
+  $("tDias").innerHTML = ds.length ? `<tr><th class="e">Dia</th><th>Matrículas</th><th>Receita líquida</th></tr>` + ds.map((x) => `<tr><td class="e">${dia(x.dia)}</td><td>${num(x.matriculas)}</td><td class="ouro">${brl(x.liquido)}</td></tr>`).join("")
+    : `<tr><td class="vazio e">Ainda não há matrícula paga do avulso.</td></tr>`;
+}
+
+async function carregar(gerar) {
+  const b = $("btnGerar"); b.disabled = true; b.textContent = gerar ? "Atualizando…" : "Carregando…"; $("err").style.display = "none";
+  try {
+    const q = new URLSearchParams({ k: K }); if (gerar) q.set("gerar", "1");
+    const r = await fetch(API + "?" + q.toString(), { headers: { Authorization: "Bearer " + ANON, apikey: ANON } });
+    const d = await r.json();
+    if (!r.ok || d.error) throw new Error(d.error || ("resposta " + r.status));
+    render(d);
+  } catch (e) {
+    $("err").textContent = "Falha ao carregar os dados: " + e.message + (K ? "" : " — confira a chave ?k= no endereço.");
+    $("err").style.display = "block";
+  }
+  b.disabled = false; b.textContent = "Atualizar agora";
+}
+$("btnGerar").onclick = () => carregar(true);
+if (window.__DADOS_TESTE) render(window.__DADOS_TESTE); else carregar(false);
+</script>
+</body>
+</html>
